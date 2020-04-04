@@ -8,94 +8,128 @@
 
 <body>
 
-    <p></p>
+    <button class="button" id="rock">Rock</button>
+    <button class="button" id="paper">Paper</button>
+    <button class="button" id="scissors">Scissors</button>
 
+    <p id="user_choice"></p>
+    <p id="comp_choice"></p>
+    <p id="result"></p>
+    <p id="scores"></p>
+    <p id="game"></p>
     <script>
 
+        // Initialise
         let game = 0;
         let i_won = 0;
         let you_won = 0;
         let drawn = 0;
+        initialise();
 
-        for (game = 1; game < 6; game++) {
-            let result = playRound();
-            alert(result);
+        // Add event listener for buttons
+        const buttons = document.querySelectorAll('.button');
+        buttons.forEach(button => button.addEventListener('click', playRound));
 
-            if (result.slice(0, 11) == "It's a draw") {
-                drawn++;
-            }
-
-            if (result.slice(0, 7) == "You won") {
-                you_won++;
-            }
-
-            if (result.slice(0, 5) == "I won") {
-                i_won++;
-            }
-
+        // Functions
+        function initialise() {
+            game = 0;
+            i_won = 0;
+            you_won = 0;
+            drawn = 0;
+            document.getElementById("user_choice").innerHTML = '';
+            document.getElementById("comp_choice").innerHTML = '';
+            document.getElementById("result").innerHTML = '';
+            document.getElementById("game").innerHTML = '';
         }
 
-        alert("Scores: You Won " + you_won + " I won " + i_won + " Draws " + drawn);
+        function displayScores() {
+            let score = 'Games Played ' + game + ' - You Won ' + you_won + ' - I Won ' + i_won + ' - Drawn ' + drawn;
+            document.getElementById("scores").innerHTML = score;
+        }
 
+        function playRound(e) {
 
-        function playRound() {
-            let user_choice = userPlay();
-
-            let comp_choice = computerPlay();
-
-            if (user_choice == 'error') {
-                return 'Invaid Entry';
+            if (you_won >= 5 || i_won >= 5) {
+                initialise();
             }
+
+            let user_choice = this.id;
+            let comp_choice = computerPlay();
+            let result = '';
+            game++;
 
             switch (user_choice) {
                 case 'rock':
                     if (comp_choice == "rock") {
-                        return "It's a draw! We both went for Rock!";
+                        result = "It's a draw! We both went for Rock!";
+                        drawn++;
+                        break;
                     }
 
                     if (comp_choice == "scissors") {
-                        return 'You won! Rock crushes scissors!';
+                        result = 'You won! Rock crushes scissors!';
+                        you_won++;
+                        break;
                     }
 
                     if (comp_choice == "paper") {
-                        return 'I won! Paper covers Rock!';
+                        result = 'I won! Paper covers Rock!';
+                        i_won++;
+                        break;
                     }
                 case 'paper':
                     if (comp_choice == "paper") {
-                        return "It's a draw! We both went for Paper!";
+                        result = "It's a draw! We both went for Paper!";
+                        drawn++;
+                        break;
                     }
 
                     if (comp_choice == "scissors") {
-                        return 'I won! Scissors cuts Paper!';
+                        result = 'I won! Scissors cuts Paper!';
+                        i_won++;
+                        break;
                     }
 
                     if (comp_choice == "rock") {
-                        return 'You won! Paper covers Rock!';
+                        result = 'You won! Paper covers Rock!';
+                        you_won++;
+                        break;
                     }
 
                 case 'scissors':
                     if (comp_choice == "scissors") {
-                        return "It's a draw! We both went for Scissors!";
+                        result = "It's a draw! We both went for Scissors!";
+                        drawn++;
+                        break;
                     }
 
                     if (comp_choice == "paper") {
-                        return 'You won! Scissors cuts Paper!';
+                        result = 'You won! Scissors cuts Paper!';
+                        you_won++;
+                        break;
                     }
 
                     if (comp_choice == "rock") {
-                        return 'I won! Rock crushes Scissors!';
+                        result = 'I won! Rock crushes Scissors!';
+                        i_won++;
+                        break;
                     }
             }
-        }
 
-        function userPlay() {
-            let choice = prompt("Enter your choice");
-            choice = choice.toLowerCase();
-            if (choice == "rock" || choice == "paper" || choice == "scissors") {
-                return choice;
-            } else {
-                return 'error';
+            // Display result in DOM
+            document.getElementById("user_choice").innerHTML = 'Your choice - ' + user_choice;
+            document.getElementById("comp_choice").innerHTML = 'My choice - ' + comp_choice;
+            document.getElementById("result").innerHTML = result;
+            displayScores();
+
+            if (you_won >= 5) {
+                document.getElementById("game").innerHTML = 'You won! First to 5!';
             }
+
+            if (i_won >= 5) {
+                document.getElementById("game").innerHTML = 'I won! First to 5!';
+            }
+
         }
 
         function computerPlay() {

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Rock Paper Scissors</title>
+</head>
+
+<body>
+
+    <p></p>
+
+    <script>
+
+        let game = 0;
+        let i_won = 0;
+        let you_won = 0;
+        let drawn = 0;
+
+        for (game = 1; game < 6; game++) {
+            let result = playRound();
+            alert(result);
+
+            if (result.slice(0, 11) == "It's a draw") {
+                drawn++;
+            }
+
+            if (result.slice(0, 7) == "You won") {
+                you_won++;
+            }
+
+            if (result.slice(0, 5) == "I won") {
+                i_won++;
+            }
+
+        }
+
+        alert("Scores: You Won " + you_won + " I won " + i_won + " Draws " + drawn);
+
+
+        function playRound() {
+            let user_choice = userPlay();
+
+            let comp_choice = computerPlay();
+
+            if (user_choice == 'error') {
+                return 'Invaid Entry';
+            }
+
+            switch (user_choice) {
+                case 'rock':
+                    if (comp_choice == "rock") {
+                        return "It's a draw! We both went for Rock!";
+                    }
+
+                    if (comp_choice == "scissors") {
+                        return 'You won! Rock crushes scissors!';
+                    }
+
+                    if (comp_choice == "paper") {
+                        return 'I won! Paper covers Rock!';
+                    }
+                case 'paper':
+                    if (comp_choice == "paper") {
+                        return "It's a draw! We both went for Paper!";
+                    }
+
+                    if (comp_choice == "scissors") {
+                        return 'I won! Scissors cuts Paper!';
+                    }
+
+                    if (comp_choice == "rock") {
+                        return 'You won! Paper covers Rock!';
+                    }
+
+                case 'scissors':
+                    if (comp_choice == "scissors") {
+                        return "It's a draw! We both went for Scissors!";
+                    }
+
+                    if (comp_choice == "paper") {
+                        return 'You won! Scissors cuts Paper!';
+                    }
+
+                    if (comp_choice == "rock") {
+                        return 'I won! Rock crushes Scissors!';
+                    }
+            }
+        }
+
+        function userPlay() {
+            let choice = prompt("Enter your choice");
+            choice = choice.toLowerCase();
+            if (choice == "rock" || choice == "paper" || choice == "scissors") {
+                return choice;
+            } else {
+                return 'error';
+            }
+        }
+
+        function computerPlay() {
+            let index = Math.floor(Math.random() * 3);
+            switch (index) {
+                case 0:
+                    return "rock";
+                    break;
+                case 1:
+                    return "paper";
+                    break;
+                case 2:
+                    return "scissors";
+                    break;
+            }
+        }
+
+    </script>
+
+
+</body>
+
+</html>
